@@ -1,0 +1,151 @@
+<!-- 
+Author       : Aishwarya.S.R
+Date Updated : 01.05.2020
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gyanam-Issuer main</title>   
+    <link rel="icon" type="image/png" href="../images/logo.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link href="../css/main.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script>function openWin1() 
+    {
+        window.open("html/gen-cert.html","_self");
+    }
+    </script>
+    
+
+</head>
+
+<body>
+    <h>
+        Gyan-namchain
+    </h>
+    
+    <!-- 
+    Author       : Ramaguru Radhakrishnan
+    Date Updated : 01.05.2020
+    -->
+    <script src=" https://cdn.jsdelivr.net/npm/web3@1.2.7/dist/web3.js"></script>
+    <script>
+        window.onload = function () 
+        {
+            // check to see if user has metamask addon installed on his browser. check to make sure web3 is defined
+            if (typeof web3 ==='undefined') 
+            {
+                web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/cbd9dc11b30147e9a2cc974be655ef7c"));
+                //web3 = new Web3(new web3.currentProvider);
+            }
+        }  
+    </script>
+    <script>
+         web3 = new Web3(new Web3.providers.WebsocketProvider("wss://ropsten.infura.io/ws/v3/cbd9dc11b30147e9a2cc974be655ef7c"));
+         console.log("checking");
+         var subscription = web3.eth.subscribe('logs', {
+             address: '0x2Aad0cB9eB6C39508599E5aD866C18a2d90187Ff',
+             topics: ['0xa1cac0c02aaa8455b22f4edad5ea6218aeec41fd73afcf8668f7586accd1f901']
+             }, function(error, result){
+             console.log("inside if");   
+             if (!error)
+             {
+                console.log(hexToString (result.data));
+             }
+             else
+             {
+                console.log(error);
+             }
+         });
+        function hexToString (hex) 
+        {
+            var string = '';
+            for (var i = 128; i < hex.length; i += 2) 
+            {
+                string += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+            }
+            return string.substring(1);
+        }
+        
+        //function to retrieve the last inserted value on the blockchain
+        function getValue()
+        {
+            console.log("Getting the value");
+
+            try 
+            {
+                // contract Abi defines all the variables,constants and functions of the smart contract. replace with your own abi
+                var abi = 
+                    [
+
+                    ]
+                //contract address. please change the address to your own
+                var contractaddress = '0x2A73aeD68cA411F38f34251AD81b4b6C599bb4df';
+                //instantiate and connect to contract address via Abi
+                var myAbi = web3.eth.contract(abi);
+                var myfunction = myAbi.at(contractaddress);
+                //call the get function of our SimpleStorage contract
+                myfunction.retreive.call(function (err, id) 
+                {
+                    if (err) 
+                    { 
+                        console.log(err)
+                    }
+                    if (id) 
+                    {
+                        //display value on the webpage
+                    }
+                });
+            }
+            catch (err) 
+            {
+                document.getElementById("xbalance").innerHTML = err;
+            }
+        }
+    </script> 
+    
+    <div class="sidenav">
+        <br><br>
+        <a href="">Issuer Id</a>
+        <a><button class="dropbtn" onclick="openWin1()">Upload</button></a>
+        <a href="">Share</a>
+        <a href="">
+        <div class="dropdown">
+            <button class="dropbtn">History</button>
+            <div class="dropdown-content">
+                <a href="#">Certificates Issued</a>
+                <a href="#">Hash key transfer</a>
+           </div>
+        </div>
+        </a>
+        <a href="">Settings</a>
+    </div>
+    
+    <div class="topnav">
+        <input type="text" placeholder="Search..">
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="desc1">Recently issued</div>
+                <a target="_blank" href="https://i.pinimg.com/736x/65/7c/be/657cbea4004a1c0778976aac6cfb44b9.jpg">
+                    <img src="https://i.pinimg.com/736x/65/7c/be/657cbea4004a1c0778976aac6cfb44b9.jpg"  class="imgdet">
+                </a>
+                <div class="desc">Date of issuance:12.03.2019</div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="desc2">Recently shared</div>
+                <a target="_blank" href="https://i.pinimg.com/736x/b4/e7/09/b4e709fcd318edd41e90a1ff0d5889cb.jpg">
+                    <img src="https://i.pinimg.com/736x/b4/e7/09/b4e709fcd318edd41e90a1ff0d5889cb.jpg" class="imgdet1">
+                </a>
+                <div class="desc3">Date of sharing:15.04.2020</div>
+            </div>
+        </div>
+    </div>   
+</body>
+</html>

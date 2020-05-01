@@ -1,0 +1,100 @@
+<!-- 
+Author       : Aishwarya.S.R
+Date Updated : 01.05.2020
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gyanam Certificate</title>   
+    <link rel="icon" type="image/png" href="../images/logo.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="../css/gen-cert.css" rel="stylesheet">
+    <script>
+    function openWini() 
+    {
+        window.open("html/issuer-main.html","_self");
+    }
+    function openWinup() 
+    {
+        window.open("html/upload.html","_self");
+    }
+    </script>
+</head>
+    
+<body>
+    <!-- 
+    Author       : Ramaguru Radhakrishnan
+    Date Updated : 01.05.2020
+    -->
+    <script src=" https://cdn.jsdelivr.net/npm/web3@1.2.7/dist/web3.js"></script>
+    <script>
+        window.onload = function () 
+        {
+            // check to see if user has metamask addon installed on his browser. check to make sure web3 is defined
+            if (typeof web3 ==='undefined') 
+            {
+                web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/cbd9dc11b30147e9a2cc974be655ef7c"));
+                //web3 = new Web3(new web3.currentProvider);
+            }
+        }  
+    </script>
+    
+    <button onclick="document.getElementById('id03').style.display='block'" >Certificate Details</button>
+    <div id="id03" class="modal">
+        <span onclick="document.getElementById('id03').style.display='none'" class="close" title="Close Modal">&times;</span>
+        <form class="modal-content" action="/action_page.php">
+            <div class="container">
+                <h1>Certificate</h1>
+                <p>Please fill the details of the certificate.</p>
+                <hr>
+                <label for="holn"><b>Name</b></label>
+                <input type="text" placeholder="Enter the holder name" name="holn" required>
+                <label for="vt"><b>Type</b></label>
+                <br><br>
+                <select id="ctype" name="Certificate type" form="certificationform">
+                      <option value="0">Academic</option>
+                      <option value="1">Technical</option>
+                      <option value="2">Sports</option>
+                      <option value="3">Language</option>
+                      <option value="3">Competitive exams</option>
+                </select>
+                <br><br>
+                <label for="id"><b>Issue date</b></label>
+                <input type="text" placeholder="Enter the issue date of the certificate" name="id" required>
+                <label for="ded"><b>Expiry date existance</b></label>
+                <br><br>
+                <select id="ede" name="Expiry date exists" form="expiryform">
+                      <option value="0">Yes</option>
+                      <option value="1">No</option>
+                </select>
+                <br><br>
+                <label for="ed"><b>Expiry date</b></label>
+                <input type="text" placeholder="Enter the expiry date if exists otherwise enter nil" name="ed" required> 
+                <div class="clearfix">
+                    <button type="button" onclick="document.getElementById('id03').style.display='none'" class="cancelbtn">Reset</button>
+                    <button type="submit" class="signupbtn" onclick="openWini()">Issue certificate</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Get the modal
+        var modal3 = document.getElementById('id03');
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) 
+        {
+            if (event.target == modal3) 
+            {
+                modal3.style.display = "none";
+            }
+        }
+    </script>
+    
+</body>
+</html>
