@@ -1,6 +1,6 @@
 <!-- 
 Author       : Aishwarya.S.R
-Date Updated : 01.05.2020
+Date Updated : 12.05.2020
 -->
 <!DOCTYPE html>
 <html>
@@ -39,11 +39,22 @@ Date Updated : 01.05.2020
 </head>
 
 <body>
+
+    <div class="center">
+        <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Holder</button>
+        <br>
+        <button onclick="document.getElementById('id02').style.display='block'" style="width:auto;">Issuer</button>
+        <br>
+        <button onclick="document.getElementById('id03').style.display='block'" style="width:auto;">Verifier</button>
+    </div>
+    
+    
     <!-- 
     Author       : Ramaguru Radhakrishnan
     Date Updated : 01.05.2020
     -->
     <script src=" https://cdn.jsdelivr.net/npm/web3@1.2.7/dist/web3.js"></script>
+    <script src= "../js/abi.js"></script>
     <script>
         window.onload = function () 
         {
@@ -55,13 +66,89 @@ Date Updated : 01.05.2020
             }
         }  
     </script>
-    <div class="center">
-        <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Holder</button>
-        <br>
-        <button onclick="document.getElementById('id02').style.display='block'" style="width:auto;">Issuer</button>
-        <br>
-        <button onclick="document.getElementById('id03').style.display='block'" style="width:auto;">Verifier</button>
-    </div>
+    
+      
+    <script>
+        
+        //function to retrieve the last inserted value on the blockchain
+        function register_holder()
+        {
+            console.log("Registering the holder");
+
+            try 
+            {
+                
+                //instantiate and connect to contract address via Abi
+                var myfunction = new web3.eth.Contract(holderABI, holderSCAddr, {from: '0x8114385A57740895bC22502A7F3f2B4d93858e4d', gasPrice: '5000000' });
+                var hname=document.getElementById("hname").value;
+                var dob=document.getElementById("dob").value;
+                console.log(hname+","+dob);
+                
+                
+                //call the get function of our SimpleStorage contract
+                myfunction.methods.reg_holder(hname, dob).call().then(console.log);
+            }
+            catch(err)
+                {
+                    
+                }
+        }
+        
+        
+        function register_issuer()
+        {
+            console.log("Registering the issuer");
+
+            try 
+            {
+                
+                //instantiate and connect to contract address via Abi
+                var myfunction = new web3.eth.Contract(issuerABI, issuerSCAddr, {from: '0x8114385A57740895bC22502A7F3f2B4d93858e4d', gasPrice: '5000000' });
+                var name=document.getElementById("name").value;
+                var loc=document.getElementById("loc").value;
+                var type=document.getElementById("type").value;
+                console.log(name+","+loc+","+type);
+                
+                
+                //call the get function of our SimpleStorage contract
+                myfunction.methods.reg_issuer(name, loc, type).call().then(console.log);
+            }
+            catch(err)
+                {
+                    
+                }
+        }
+        
+        
+        //function to retrieve the last inserted value on the blockchain
+        function register_verifier()
+        {
+            console.log("Registering the verifier");
+
+            try 
+            {
+                
+                //instantiate and connect to contract address via Abi
+                var myfunction = new web3.eth.Contract(verifierABI, verifierSCAddr, {from: '0x8114385A57740895bC22502A7F3f2B4d93858e4d', gasPrice: '5000000' });
+                var vname=document.getElementById("vname").value;
+                var addr=document.getElementById("addr").value;
+                var vtype=document.getElementById("vtype").value;
+                //var vp=document.getElementById("vp").value;
+                console.log(vname+","+addr+","+vtype);
+                
+                
+                //call the get function of our SimpleStorage contract
+                myfunction.methods.reg_verifier(vname, addr, vtype).call().then(console.log);
+            }
+            catch(err)
+                {
+                   
+                }
+        }
+        
+    </script> 
+    
+    
     <div id="id01" class="modal">
         <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
         <form class="modal-content" action="/action_page.php">
@@ -70,18 +157,19 @@ Date Updated : 01.05.2020
                 <p>Please fill in this form to register.</p>
                 <hr>
                 <label for="un"><b>Name</b></label>
-                <input type="text" placeholder="Enter Holder name" name="un" required>
+                <input type="text" placeholder="Enter Holder name" id="hname" name="hname" required>
                 <label for="dob"><b>Date of birth</b></label>
-                <input type="text" placeholder="Enter date of birth" name="dob" required>
+                <input type="text" placeholder="Enter date of birth" id="dob" name="dob" required>
 
                 <div class="clearfix">
                     <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
-                    <button type="submit" class="signupbtn" onclick="openWinh()">Register</button>
+                    <button type="button" class="signupbtn" onclick="register_holder()">Register</button>
                 </div>
             </div>
         </form>
     </div>
 
+    
     <script>
         // Get the modal
         var modal1 = document.getElementById('id01'); 
@@ -95,6 +183,7 @@ Date Updated : 01.05.2020
         }
     </script>
 
+        
 
     <div id="id02" class="modal">
         <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">&times;</span>
@@ -104,12 +193,12 @@ Date Updated : 01.05.2020
                 <p>Please fill in this form to register.</p>
                 <hr>
                 <label for="in"><b>Name</b></label>
-                <input type="text" placeholder="Enter Institution Name" name="in" required>
+                <input  type="text" placeholder="Enter Institution Name" id="name" name="name" required>
                 <label for="lc"><b>Location</b></label>
-                <input type="text" placeholder="Enter Location" name="lc" required>
+                <input type="text" placeholder="Enter Location" id="loc" name="loc" required>
                 <label for="it"><b>Type</b></label>
                 <br><br>
-                <select id="itype" name="Issuer type" form="issuerform">
+                <select id="type" name="type" form="issuerform">
                     <option value="University">University</option>
                     <option value="College">College</option>
                     <option value="School">School</option>
@@ -119,12 +208,12 @@ Date Updated : 01.05.2020
                 
                 <div class="clearfix">
                     <button type="button" onclick="document.getElementById('id02').style.display='none'" class="cancelbtn">Cancel</button>
-                    <button type="submit" class="signupbtn" onclick="openWini()">Register</button>
+                    <button type="button" class="signupbtn" onclick="register_issuer()">Register</button>
                 </div>
             </div>
       </form>
     </div>
-
+    
     <script>
         // Get the modal
         var modal2 = document.getElementById('id02');
@@ -139,6 +228,7 @@ Date Updated : 01.05.2020
     </script>
     
 
+    
     <div id="id03" class="modal">
       <span onclick="document.getElementById('id03').style.display='none'" class="close" title="Close Modal">&times;</span>
       <form class="modal-content" action="/action_page.php">
@@ -147,29 +237,28 @@ Date Updated : 01.05.2020
                 <p>Please fill in this form to register.</p>
                 <hr>
                 <label for="usrn"><b>Name</b></label>
-                <input type="text" placeholder="Enter Company name" name="usrn" required>
+                <input type="text" placeholder="Enter Company name" id="vname" name="vname" required>
                 <label for="addr"><b>Location</b></label>
-                <input type="text" placeholder="Enter Comapny Address" name="addr" required>
+                <input type="text" placeholder="Enter Comapny Address" id="addr" name="addr" required>
                 <label for="vt"><b>Type</b></label>
                 <br><br>
-                <select id="vtype" name="Verifier type" form="verifierform">
+                <select id="vtype" name="vtype" form="verifierform">
                     <option value="Education">Educational institutions</option>
                     <option value="Bank">Bank</option>
                     <option value="Govt">Government organizations</option>
                     <option value="Private">Private organizations/corporate</option>
                 </select>
                 <br><br>
-                <label for="vp"><b>Verification purpose</b></label>
-                <input type="text" placeholder="Enter the verification purpose" name="vp" required>
 
                 <div class="clearfix">
                     <button type="button" onclick="document.getElementById('id03').style.display='none'" class="cancelbtn">Cancel</button>
-                    <button type="submit" class="signupbtn" onclick="openWinv()">Register</button>
+                    <button type="button" class="signupbtn" onclick="register_verifier()">Register</button>
                 </div>
             </div>
       </form>
     </div>
 
+    
     <script>
         // Get the modal
         var modal3 = document.getElementById('id03');

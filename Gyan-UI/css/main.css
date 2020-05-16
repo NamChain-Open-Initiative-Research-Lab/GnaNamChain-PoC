@@ -11,6 +11,33 @@ body {
         font-size: 45px;
 }
 
+
+.upfi
+{
+    padding-top:250px;
+    padding-left:750px;
+}
+
+.upfi input
+{
+  background-color: black; /* Green background */
+  border: 2px solid silver; /* Green border */
+  color: white; /* White text */
+  padding: 10px 24px; /* Some padding */
+  cursor: pointer; /* Pointer/hand icon */
+  float: left; /* Float the buttons side by side */   
+}
+
+ .upfi button
+{
+  background-color: black; /* Green background */
+  border: 2px solid silver; /* Green border */
+  color: white; /* White text */
+  padding: 10px 140px; /* Some padding */
+  cursor: pointer; /* Pointer/hand icon */
+  float: left; /* Float the buttons side by side */
+}
+
 .btn-group button {
   background-color: black; /* Green background */
   border: 2px solid silver; /* Green border */

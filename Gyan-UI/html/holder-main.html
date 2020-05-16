@@ -1,6 +1,6 @@
 <!-- 
 Author       : Aishwarya.S.R
-Date Updated : 01.05.2020
+Date Updated : 12.05.2020
 -->
 <!DOCTYPE html>
 <html>
@@ -9,12 +9,12 @@ Date Updated : 01.05.2020
     <link rel="icon" type="image/png" href="../images/logo.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-      <link href="../css/main.css" rel="stylesheet">
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-     <script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link href="../css/main.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script>
      function openWinq() 
      {
         window.open("gen-qr.html","_self");
@@ -26,11 +26,13 @@ Date Updated : 01.05.2020
     <h>
        Gyan-namchain
     </h>
+    
     <!-- 
     Author       : Ramaguru Radhakrishnan
     Date Updated : 01.05.2020
     -->
     <script src=" https://cdn.jsdelivr.net/npm/web3@1.2.7/dist/web3.js"></script>
+    <script src= "../js/abi.js"></script>
     <script>
         window.onload = function () 
         {
@@ -42,6 +44,7 @@ Date Updated : 01.05.2020
             }
         }  
     </script>
+    
     <script>
          web3 = new Web3(new Web3.providers.WebsocketProvider("wss://ropsten.infura.io/ws/v3/cbd9dc11b30147e9a2cc974be655ef7c"));
          console.log("checking");
@@ -69,40 +72,26 @@ Date Updated : 01.05.2020
             return string.substring(1);
         }
         
-        //function to retrieve the last inserted value on the blockchain
-        function getValue()
+                //function to retrieve the last inserted value on the blockchain
+        function send_certificate()
         {
-            console.log("Getting the value");
+            console.log("Sending the certificate");
 
             try 
             {
-                // contract Abi defines all the variables,constants and functions of the smart contract. replace with your own abi
-                var abi = 
-                    [
-
-                    ]
-                //contract address. please change the address to your own
-                var contractaddress = '0x2A73aeD68cA411F38f34251AD81b4b6C599bb4df';
+                
                 //instantiate and connect to contract address via Abi
-                var myAbi = web3.eth.contract(abi);
-                var myfunction = myAbi.at(contractaddress);
+                var myfunction = new web3.eth.Contract(holderABI, holderSCAddr, {from: '0x8114385A57740895bC22502A7F3f2B4d93858e4d', gasPrice: '5000000' });
+                
+
+                
                 //call the get function of our SimpleStorage contract
-                myfunction.retreive.call(function (err, id) 
+                myfunction.methods.send_cert().call().then(console.log);
+            }
+            catch(err)
                 {
-                    if (err) 
-                    { 
-                        console.log(err)
-                    }
-                    if (id) 
-                    {
-                        //display value on the webpage
-                    }
-                });
-            }
-            catch (err) 
-            {
-                document.getElementById("xbalance").innerHTML = err;
-            }
+                    
+                }
         }
     </script> 
     
@@ -112,7 +101,7 @@ Date Updated : 01.05.2020
         <a class="x" href="">Certificates</a>
         <a href="">
         <div class="dropdown">
-            <button class="dropbtn">Share</button>
+            <button class="dropbtn" onclick="send_certificate()">Share</button>
             <div class="dropdown-content">
                 <a href="#">Download pdf</a>
                 <a href="#">Get link</a>
@@ -145,6 +134,7 @@ Date Updated : 01.05.2020
                 <div class="desc3">Date of sharing:15.04.2020</div>
             </div>
         </div>
-    </div>   
+    </div>  
+    
 </body>
 </html>

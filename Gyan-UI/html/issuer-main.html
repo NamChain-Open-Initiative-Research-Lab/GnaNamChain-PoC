@@ -1,6 +1,6 @@
 <!-- 
 Author       : Aishwarya.S.R
-Date Updated : 01.05.2020
+Date Updated : 16.05.2020
 -->
 <!DOCTYPE html>
 <html>
@@ -28,11 +28,13 @@ Date Updated : 01.05.2020
         Gyan-namchain
     </h>
     
+    
     <!-- 
     Author       : Ramaguru Radhakrishnan
     Date Updated : 01.05.2020
     -->
     <script src=" https://cdn.jsdelivr.net/npm/web3@1.2.7/dist/web3.js"></script>
+    <script src= "../js/abi.js"></script>
     <script>
         window.onload = function () 
         {
@@ -71,47 +73,93 @@ Date Updated : 01.05.2020
             return string.substring(1);
         }
         
-        //function to retrieve the last inserted value on the blockchain
-        function getValue()
+        
+        function issue_certificate()
         {
-            console.log("Getting the value");
+            console.log("Issuing the certificate");
 
             try 
             {
-                // contract Abi defines all the variables,constants and functions of the smart contract. replace with your own abi
-                var abi = 
-                    [
-
-                    ]
-                //contract address. please change the address to your own
-                var contractaddress = '0x2A73aeD68cA411F38f34251AD81b4b6C599bb4df';
+                
+                
                 //instantiate and connect to contract address via Abi
-                var myAbi = web3.eth.contract(abi);
-                var myfunction = myAbi.at(contractaddress);
+                var myfunction = new web3.eth.Contract(issuerABI, issuerSCAddr, {from: '0x8114385A57740895bC22502A7F3f2B4d93858e4d', gasPrice: '5000000' });
+                var tokid = document.getElementById("tokid").value;
+                var ctype = document.getElementById("ctype").value;
+                var hash  = document.getElementById("hash").value;
+                var issdate  = document.getElementById("issdate").value;
+                var expex  = document.getElementById("expex").value;
+                var expdate  = document.getElementById("expdate").value;
+                console.log(tokid+","+ctype+","+hash+","+issdate+","+expex+","+expdate);
+                
+                
+                
+                
                 //call the get function of our SimpleStorage contract
-                myfunction.retreive.call(function (err, id) 
+                myfunction.methods.issue_cert(tokid,ctype,hash,issdate,expex,expdate).call().then(console.log);
+            }
+            catch(err)
                 {
-                    if (err) 
-                    { 
-                        console.log(err)
-                    }
-                    if (id) 
-                    {
-                        //display value on the webpage
-                    }
-                });
-            }
-            catch (err) 
-            {
-                document.getElementById("xbalance").innerHTML = err;
-            }
+                    
+                }
         }
     </script> 
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/ipfs-http-client@42.0.0/dist/index.js"></script>
+
+    <script>
+	
+		/**  To Connect to the Remote IPFS Service Running at INFURA through HTTPS:5001 **/
+        const ipfs = IpfsHttpClient({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
+		
+		var fileBuffer;
+		
+		/** Function to convert the file to ByteArray **/
+        function captureFile()
+        {
+		
+			var fileByteArray;
+			
+            var reader = new FileReader();
+            const file = filetoAddIPFS.files[0];
+            reader.readAsArrayBuffer(file);
+            reader.onloadend = 
+            function (evt) 
+            {
+                fileByteArray = reader.result;
+				fileBuffer = new Uint8Array(fileByteArray);
+				console.log("Buffer: ", fileBuffer);
+				
+            }		 
+       }
+	   
+	   /** Function to add the Array to IPFS **/
+	    function addFile2IPFS(){
+			
+			console.log("Adding File to IPFS..")
+			
+			/** IPFS Add Command **/
+			ipfs.add(fileBuffer, (error, result) => {
+			if (result) {
+				console.log(result);
+			} 
+			else 
+			{
+				console.log(error);
+			}
+			});
+	   }
+    </script>
+    
+    
+
     
     <div class="sidenav">
         <br><br>
         <a href="">Issuer Id</a>
-        <a><button class="dropbtn" onclick="openWin1()">Upload</button></a>
+        <a><button class="dropbtn" onclick="issue_certificate()">Upload</button></a>
         <a href="">Share</a>
         <a href="">
         <div class="dropdown">
@@ -125,17 +173,26 @@ Date Updated : 01.05.2020
         <a href="">Settings</a>
     </div>
     
+    
     <div class="topnav">
         <input type="text" placeholder="Search..">
     </div>
-    <div class="container-fluid">
+    
+    <div class="upfi"> 
+        <form>
+            <input type="file" id="filetoAddIPFS" onchange=captureFile()>
+            <br><br><br>
+            <button onclick=addFile2IPFS()>IPFS</button>
+        </form>
+    </div>
+    
+    <!--<div class="container-fluid">
         <div class="row">
             <div class="col-sm-6">
                 <div class="desc1">Recently issued</div>
-                <a target="_blank" href="https://i.pinimg.com/736x/65/7c/be/657cbea4004a1c0778976aac6cfb44b9.jpg">
-                    <img src="https://i.pinimg.com/736x/65/7c/be/657cbea4004a1c0778976aac6cfb44b9.jpg"  class="imgdet">
-                </a>
-                <div class="desc">Date of issuance:12.03.2019</div>
+           
+                <div class="desc"> <form><input type="file" id="filetoAddIPFS" onchange=captureFile()>
+                <button onclick=addFile2IPFS()>ipfs</button></form></div>
             </div>
 
             <div class="col-sm-6">
@@ -146,6 +203,7 @@ Date Updated : 01.05.2020
                 <div class="desc3">Date of sharing:15.04.2020</div>
             </div>
         </div>
-    </div>   
+    </div>   -->
+    
 </body>
 </html>
