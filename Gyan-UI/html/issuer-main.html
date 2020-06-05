@@ -1,11 +1,11 @@
 <!-- 
 Author       : Aishwarya.S.R
-Date Updated : 16.05.2020
+Date Updated : 05.06.2020
 -->
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Gyanam-Issuer main</title>   
+    <title>Gyan-NamChain | Issuer Main</title>   
     <link rel="icon" type="image/png" href="../images/logo.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
@@ -25,35 +25,58 @@ Date Updated : 16.05.2020
 
 <body>
     <h>
-        Gyan-namchain
+        Gyan-NamChain
     </h>
     
     
     <!-- 
     Author       : Ramaguru Radhakrishnan
-    Date Updated : 01.05.2020
+    Date Updated : 18.05.2020
     -->
-    <script src=" https://cdn.jsdelivr.net/npm/web3@1.2.7/dist/web3.js"></script>
+    <script src=" https://cdn.jsdelivr.net/npm/web3/dist/web3.js"></script>
     <script src= "../js/abi.js"></script>
     <script>
-        window.onload = function () 
-        {
-            // check to see if user has metamask addon installed on his browser. check to make sure web3 is defined
-            if (typeof web3 ==='undefined') 
-            {
-                web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/cbd9dc11b30147e9a2cc974be655ef7c"));
-                //web3 = new Web3(new web3.currentProvider);
-            }
-        }  
+        var account;
+		window.addEventListener('load', async () => {
+
+	
+		if (typeof window.ethereum !== 'undefined') { 
+			console.log("MetaMask is Available :) !"); 
+			}
+			
+		// Modern DApp browsers
+		if (window.ethereum) {
+			window.web3 = new Web3(ethereum);
+			
+			// To prevent the page reloading when the MetaMask network changes
+			ethereum.autoRefreshOnNetworkChange = false;
+			
+			// To Capture the account details from MetaMask
+			const accounts = await ethereum.enable();
+			account = accounts[0];
+				
+			}
+		// Legacy DApp browsers
+		else if (window.web3) {
+			//window.web3 = new Web3(web3.currentProvider);
+			window.web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/cbd9dc11b30147e9a2cc974be655ef7c")); 
+			}
+		// Non-DApp browsers
+		else {
+			console.log('Non-Ethereum browser detected. Please install MetaMask');
+			}
+			
+			});
+			
     </script>
     <script>
          web3 = new Web3(new Web3.providers.WebsocketProvider("wss://ropsten.infura.io/ws/v3/cbd9dc11b30147e9a2cc974be655ef7c"));
-         console.log("checking");
+
          var subscription = web3.eth.subscribe('logs', {
              address: '0x2Aad0cB9eB6C39508599E5aD866C18a2d90187Ff',
              topics: ['0xa1cac0c02aaa8455b22f4edad5ea6218aeec41fd73afcf8668f7586accd1f901']
              }, function(error, result){
-             console.log("inside if");   
+  
              if (!error)
              {
                 console.log(hexToString (result.data));
@@ -63,40 +86,36 @@ Date Updated : 16.05.2020
                 console.log(error);
              }
          });
+		 
         function hexToString (hex) 
-        {
-            var string = '';
-            for (var i = 128; i < hex.length; i += 2) 
-            {
-                string += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-            }
-            return string.substring(1);
-        }
+					{
+						var tobeconverted = '';
+						tobeconverted = parseInt(hex).toString();
+						console.log(tobeconverted);
+						return tobeconverted;
+					}
         
-        
+        //function to issue certificate
         function issue_certificate()
         {
             console.log("Issuing the certificate");
 
             try 
             {
-                
-                
+             
                 //instantiate and connect to contract address via Abi
-                var myfunction = new web3.eth.Contract(issuerABI, issuerSCAddr, {from: '0x8114385A57740895bC22502A7F3f2B4d93858e4d', gasPrice: '5000000' });
-                var tokid = document.getElementById("tokid").value;
+                var myfunction = new web3.eth.Contract(issuerABI, issuerSCAddr, {from: account, gasPrice: '5000000', gas:'3000000'});
+                
+				var tokid = document.getElementById("tokid").value;
                 var ctype = document.getElementById("ctype").value;
                 var hash  = document.getElementById("hash").value;
                 var issdate  = document.getElementById("issdate").value;
                 var expex  = document.getElementById("expex").value;
                 var expdate  = document.getElementById("expdate").value;
-                console.log(tokid+","+ctype+","+hash+","+issdate+","+expex+","+expdate);
+
                 
-                
-                
-                
-                //call the get function of our SimpleStorage contract
-                myfunction.methods.issue_cert(tokid,ctype,hash,issdate,expex,expdate).call().then(console.log);
+                //call the Issue Certificate function of Issuer contract
+                myfunction.methods.issue_cert(tokid,ctype,hash,issdate,expex,expdate).send().then(console.log);
             }
             catch(err)
                 {
@@ -104,9 +123,7 @@ Date Updated : 16.05.2020
                 }
         }
     </script> 
-    
-    
-    
+
     <script src="https://cdn.jsdelivr.net/npm/ipfs-http-client@42.0.0/dist/index.js"></script>
 
     <script>
@@ -152,10 +169,7 @@ Date Updated : 16.05.2020
 			});
 	   }
     </script>
-    
-    
 
-    
     <div class="sidenav">
         <br><br>
         <a href="">Issuer Id</a>
