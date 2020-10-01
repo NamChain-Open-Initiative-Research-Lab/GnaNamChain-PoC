@@ -1,11 +1,11 @@
-# Gyanam ![](https://img.shields.io/badge/Project-Nam-ff69b4.svg) ![](https://img.shields.io/badge/Namchain-WIP-Blue.svg) 
+# Gnanam ![](https://img.shields.io/badge/Project-Nam-ff69b4.svg) ![](https://img.shields.io/badge/Namchain-WIP-Blue.svg) 
 
 
 
 Blockchain Proof of Concept for Gyan-Namchain
 
 # Introduction
-Gyan-NamChain is a blockchain solution for Digital Certificate Management
+Gnan-NamChain is a blockchain solution for Digital Certificate Management
 
 ## Users
   - **Certificate Issuer** <br/>
